@@ -1,31 +1,26 @@
 pipeline {
-    agent any
-    stages {
-        stage('Build Application') {
-            steps {
-                sh 'mvn -f java-tomcat-sample/pom.xml clean package'
+      agent any
+      stages {
+            stage('Init') {
+                  steps {
+                        echo 'Hi, this is Anshul from LevelUp360'
+                        echo 'We are Starting the Testing'
+                  }
             }
-            post {
-                success {
-                    echo "Now Archiving the Artifacts...."
-                    archiveArtifacts artifacts: '**/*.war'
-                }
+            stage('Build') {
+                  steps {
+                        echo 'Building Sample Maven Project'
+                  }
             }
-        }
-        stage('Deploy in Staging Environment'){
-            steps{
-                build job: 'Deploy_Application_Staging_Env'
-
+            stage('Deploy') {
+                  steps {
+                        echo "Deploying in Staging Area"
+                  }
             }
-            
-        }
-        stage('Deploy to Production'){
-            steps{
-                timeout(time:5, unit:'DAYS'){
-                    input message:'Approve PRODUCTION Deployment?'
-                }
-                build job: 'Deploy_Application_Prod_Env'
+            stage('Deploy Production') {
+                  steps {
+                        echo "Deploying in Production Area"
+                  }
             }
-        }
-    }
+      }
 }
